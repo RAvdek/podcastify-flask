@@ -1,0 +1,2 @@
+export VOICERSS_API_KEY=PUT_YOUR_KEY_HERE
+python podcastify/app.py
