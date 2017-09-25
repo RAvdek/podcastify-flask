@@ -1,5 +1,9 @@
+import os
 import httplib
 import urllib
+
+STATIC_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'static')
 
 
 def filter_text(unicode_text):

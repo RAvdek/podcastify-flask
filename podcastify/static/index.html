@@ -1,0 +1,51 @@
+<!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.min.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $('#button').click(function(e) {
+        var inputvalue = $("#input").val();
+        window.location.replace("/article?url="+inputvalue);
+    });
+});
+</script>
+<style>
+audio {
+    width: 90%;
+}
+.input {
+    width: 70%;
+}
+.button {
+    width: 19%;
+}
+#loader {
+    width: 90%;
+}
+</style>
+<title>Podcastify</title>
+<body class="container is-fluid">
+    <br/>
+    <h1 class="title">Podcastify</h1>
+    <h2 class="subtitle">Because reading is for nerds...</h2>
+    <br/><br/>
+    <div>
+        <span class="container">
+            <input class="input" type="text" placeholder="URL" id="input" value="URL">
+            <button class="button is-primary" type="button" id="button">Go to player</button>
+        </span>
+        {% if speech_response %}
+            <br/><br/>
+            <div class="container is-primary">
+                <audio class="is-fluid" controls="controls" src="{{ speech_response }}" autoplay="autoplay"></audio>
+            </div>
+        {% endif %}
+        <br/><br/>
+        <div id="loader">
+            <div class="box">
+                <code id="text-to-read">{{ text }}</code>
+            </div>
+        </div>
+    </div>
+</body>

@@ -13,10 +13,18 @@ import utils
 
 API_KEY = os.environ["VOICERSS_API_KEY"]
 app = Flask(__name__)
-INDEX_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'index.html')
+INDEX_PATH = os.path.join(utils.STATIC_PATH, 'index.html')
 with open(INDEX_PATH) as f:
     INDEX_TEMPLATE = Template(f.read())
+
+
+@app.route('/')
+def home():
+    content = INDEX_TEMPLATE.render({
+        "speech_response": False,
+        "text": ""
+    })
+    return make_response(content)
 
 
 @app.route('/text')
