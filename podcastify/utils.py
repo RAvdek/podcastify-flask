@@ -16,6 +16,7 @@ def filter_text(unicode_text):
 
 
 def fetch_article_body(soup):
+    # Gets largest div by text volume after deleting bad stuff
     for tag in ['style', 'script']:
         [s.decompose() for s in soup.find_all(tag)]
     div_text = [filter_text(t.text) for t in soup.find_all('div')]
@@ -23,28 +24,27 @@ def fetch_article_body(soup):
     return div_text[0]
 
 
-def speech(settings):
-    __validate(settings)
-    return __request(settings)
+def speech(query):
+    _validate_speech_query(query)
+    return _get_speech(query)
 
 
-def __validate(settings):
-    if not settings: raise RuntimeError('The settings are undefined')
-    if 'key' not in settings or not settings['key']:
+def _validate_speech_query(query):
+    if 'key' not in query:
         raise RuntimeError('The API key is undefined')
-    if 'src' not in settings or not settings['src']:
+    if 'src' not in query:
         raise RuntimeError('The text is undefined')
-    if 'hl' not in settings or not settings['hl']:
+    if 'hl' not in query:
         raise RuntimeError('The language is undefined')
 
 
-def __request(settings):
+def _get_speech(query):
     result = {'error': None, 'response': None}
 
     headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-    params = urllib.urlencode(__buildRequest(settings))
+    params = urllib.urlencode(_build_speech_request(query))
 
-    if 'ssl' in settings and settings['ssl']:
+    if 'ssl' in query:
         conn = httplib.HTTPSConnection('api.voicerss.org:443')
     else:
         conn = httplib.HTTPConnection('api.voicerss.org:80')
@@ -66,16 +66,17 @@ def __request(settings):
     return result
 
 
-def __buildRequest(settings):
-    params = {'key': '', 'src': '', 'hl': '', 'r': '', 'c': '', 'f': '', 'ssml': '', 'b64': ''}
-
-    if 'key' in settings: params['key'] = settings['key']
-    if 'src' in settings: params['src'] = settings['src']
-    if 'hl' in settings: params['hl'] = settings['hl']
-    if 'r' in settings: params['r'] = settings['r']
-    if 'c' in settings: params['c'] = settings['c']
-    if 'f' in settings: params['f'] = settings['f']
-    if 'ssml' in settings: params['ssml'] = settings['ssml']
-    if 'b64' in settings: params['b64'] = settings['b64']
-
+def _build_speech_request(query):
+    params = {
+        'key': '',
+        'src': '',
+        'hl': '',
+        'r': '',
+        'c': '',
+        'f': '',
+        'ssml': '',
+        'b64': ''
+    }
+    for key in query:
+        params[key] = query[key]
     return params

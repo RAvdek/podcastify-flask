@@ -51,7 +51,7 @@ def play_text():
 def play_article():
     url = request.args.get('url')
     content = requests.get(url).text
-    soup = BeautifulSoup(content)
+    soup = BeautifulSoup(content, 'lxml')
     article_body = utils.fetch_article_body(soup)
     return redirect(url_for('play_text', text=article_body))
 
