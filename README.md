@@ -4,6 +4,8 @@
 
 Podcastify is a web app which which plays news articles as audio.
 
+Warning: The internal text parser isn't that great so you may be listening to a non-trivial amount of raw HTML when you use the app :)
+
 # How to get it running
 
 0. If you don't do a lot of python dev, you should run `pip install -r requirements.txt` to install dependencies.
